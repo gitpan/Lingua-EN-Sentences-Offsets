@@ -1,11 +1,13 @@
 use strict; use warnings;
 package Lingua::EN::Sentence::Offsets;
 {
-  $Lingua::EN::Sentence::Offsets::VERSION = '0.01_02';
+  $Lingua::EN::Sentence::Offsets::VERSION = '0.01_03';
 }
 require Exporter;
 
 #ABSTRACT: Finds sentence boundaris, and returns their offsets.
+
+
 my ($EOS,$AP,$P,$PAP,@ABBREVIATIONS);
 use Carp qw/cluck/;
 use feature qw/say/;
@@ -20,6 +22,7 @@ our @EXPORT = qw/
 				get_acronyms 
 				set_acronyms
 			/;
+
 
 $EOS="\001";$P = q/[\.!?]/;$AP = q/(?:'|"|»|\)|\]|\})?/;$PAP = $P.$AP;
 
@@ -254,7 +257,8 @@ sub offsets2sentences {
 
 1;
 
-__END__
+
+
 =pod
 
 =head1 NAME
@@ -263,7 +267,29 @@ Lingua::EN::Sentence::Offsets - Finds sentence boundaris, and returns their offs
 
 =head1 VERSION
 
-version 0.01_02
+version 0.01_03
+
+=head1 SYNOPSIS
+
+	use Lingua::EN::Sentence::Offsets qw(get_offsets get_sentences);
+	 
+	my $offsets = get_offsets($text);     ## Get the offsets.
+	foreach my $o (@$offsets) {
+		my $start  = $o->[0];
+		my $length = $o->[1]-$o->[0];
+
+		my $sentence = substr($text,$start,$length)  ## Get a sentence.
+		# ...
+	}
+
+	### or
+
+	my $sentences = get_sentences($text);     
+	foreach my $sentence (@$sentences) {
+		## do something with $sentence
+	}
+
+=head1 METHODS
 
 =head2 get_offsets
 
@@ -304,6 +330,14 @@ First naive delimitation of sentences
 
 Given a list of sentence boundaries offsets and a text, returns an array with the text split into sentences.
 
+=head1 ACKNOWLEDGEMENTS
+
+Based on the original module L<Lingua::EN::Sentence>, from Shlomo Yona (SHLOMOY)
+
+=head1 SEE ALSO
+
+L<Lingua::EN::Sentence>, L<Text::Sentence>
+
 =head1 AUTHOR
 
 Andre Santos <andrefs@cpan.org>
@@ -316,4 +350,7 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__
 
