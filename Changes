@@ -1,0 +1,225 @@
+Changelog for Lingua-EN-Sentences-Offsets
+
+0.01_02 2012-04-19T22:26:39
+ [André Santos <andrefs@cpan.org>]
+ - finished modifying original functions from L::EN::S to work with offsets
+   small test verifies if get_sentences output remains the same (TODO:
+   improve test text)
+
+ - first_sentence_breaking rewritten as initial_offsets
+   clean_sentences rewritten as adjust_offsets
+   additional offsets2sentences to get same output as L::EN::S
+
+ - Perl::Critic compliant
+   removed uneeded files
+
+ - switched to Dist::Zilla
+
+
+v0.01_01 2012-04-19T15:01:09
+ [André Santos <andrefs@cpan.org>]
+ - initial port from Lingua::EN::Sentence v0.25
+
+
+ [Shlomo Yona <shlomoy@cpan.org>]
+ - import Lingua-EN-Sentence 0.25 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.25
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.25.tar.gz
+
+ - import Lingua-EN-Sentence 0.24 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.24
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.24.tar.gz
+
+ - import Lingua-EN-Sentence 0.23 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.23
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.23.tar.gz
+
+ - import Lingua-EN-Sentence 0.22 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.22
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.22.tar.gz
+
+ - import Lingua-EN-Sentence 0.21 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.21
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.21.tar.gz
+
+ - import Lingua-EN-Sentence 0.20 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.20
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.20.tar.gz
+
+ - import Lingua-EN-Sentence 0.19 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.19
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.19.tar.gz
+
+ - import Lingua-EN-Sentence 0.18 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.18
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.18.tar.gz
+
+ - import Lingua-EN-Sentence 0.17 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.17
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.17.tar.gz
+
+ - import Lingua-EN-Sentence 0.16 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.16
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.16.tar.gz
+
+ - import Lingua-EN-Sentence 0.15 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.15
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.15.tar.gz
+
+ - import Lingua-EN-Sentence 0.14 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.14
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.14.tar.gz
+
+ - import Lingua-EN-Sentence 0.13 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.13
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.13.tar.gz
+
+ - import Lingua-EN-Sentence 0.12 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.12
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.12.tar.gz
+
+ - import Lingua-EN-Sentence 0.11 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.11
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.11.tar.gz
+
+ - import Lingua-EN-Sentence 0.10 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.10
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.10.tar.gz
+
+ - import Lingua-EN-Sentence 0.09 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.09
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.09.tar.gz
+
+ - import Lingua-EN-Sentence 0.08 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.08
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.08.tar.gz
+
+ - import Lingua-EN-Sentence 0.07 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.07
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.07.tar.gz
+
+ - import Lingua-EN-Sentence 0.06 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.06
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.06.tar.gz
+
+ - import Lingua-EN-Sentence 0.05 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.05
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.05.tar.gz
+
+ - import Lingua-EN-Sentence 0.04 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.04
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.04.tar.gz
+
+ - import Lingua-EN-Sentence 0.03 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.03
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.03.tar.gz
+
+ - import Lingua-EN-Sentence 0.02 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.02
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.02.tar.gz
+
+ - initial import of Lingua-EN-Sentence 0.01 from CPAN
+   
+   git-cpan-module:   Lingua-EN-Sentence
+   git-cpan-version:  0.01
+   git-cpan-authorid: SHLOMOY
+   git-cpan-file:    
+   authors/id/S/SH/SHLOMOY/Lingua-EN-Sentence-0.01.tar.gz
+
+

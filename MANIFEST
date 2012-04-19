@@ -1,0 +1,13 @@
+Changes
+LICENSE
+MANIFEST
+META.yml
+Makefile.PL
+README
+dist.ini
+lib/Lingua/EN/Sentence/Offsets.pm
+t/01-test_nothing.t
+t/02-same_as_l_en_sentence.t
+t/author-critic.t
+t/release-pod-coverage.t
+t/release-pod-syntax.t
