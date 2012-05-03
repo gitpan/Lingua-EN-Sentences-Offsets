@@ -1,26 +1,30 @@
 use strict; use warnings;
 package Lingua::EN::Sentence::Offsets;
 {
-  $Lingua::EN::Sentence::Offsets::VERSION = '0.01_03';
+  $Lingua::EN::Sentence::Offsets::VERSION = '0.01_05';
 }
 require Exporter;
 
-#ABSTRACT: Finds sentence boundaris, and returns their offsets.
-
+#ABSTRACT: Finds sentence boundaries, and returns their offsets.
 
 my ($EOS,$AP,$P,$PAP,@ABBREVIATIONS);
 use Carp qw/cluck/;
 use feature qw/say/;
 use utf8::all;
+use Data::Dump qw/dump/;
 
 use base 'Exporter';
-#@EXPORT_OK = qw/
-our @EXPORT = qw/
+our @EXPORT_OK = qw/
 				get_sentences 
 				get_offsets
 				add_acronyms 
 				get_acronyms 
 				set_acronyms
+				initial_offsets
+				offsets2sentences
+				remove_false_eos
+				adjust_offsets
+				split_unsplit_stuff
 			/;
 
 
@@ -53,9 +57,9 @@ sub get_offsets {
 	my ($text) = @_;
 	return [] unless defined $text;
 	my $offsets = initial_offsets($text);
-	remove_false_eos($text,$offsets);
-	split_unsplit_stuff($text,$offsets);
-	adjust_offsets($text,$offsets);
+	   $offsets = remove_false_eos($text,$offsets);
+	   $offsets = split_unsplit_stuff($text,$offsets);
+	   $offsets = adjust_offsets($text,$offsets);
 	return $offsets;
 }
 
@@ -88,15 +92,16 @@ sub set_acronyms {
 sub remove_false_eos {
 	my ($text,$offsets) = @_;
 	my $size = @$offsets;
+	my $new_offsets = [ sort { $a->[0] <=> $b->[0] } @$offsets ];
 	for(my $i=0; $i<$size-1; $i++){
-		my $start  = $offsets->[$i][0];
-		my $end    = $offsets->[$i][1];
+		my $start  = $new_offsets->[$i][0];
+		my $end    = $new_offsets->[$i][1];
 		my $length = $end-$start;
 		my $s = substr($text,$start,$length);
 		my $j=$i+1;
 
 		my $unsplit = 0;
-		$unsplit = 1 if $s =~ /[^-\w]\w$PAP\s$/s;
+		$unsplit = 1 if $s =~ /(?:[^-\w]|^)\w$PAP\s$/s;
 		$unsplit = 1 if $s =~ /[^-\w]\w$P$/s;
 
 		# don't split after a white-space followed by a single letter followed
@@ -121,9 +126,12 @@ sub remove_false_eos {
 
 		$unsplit = 1 if $s =~ /\s$PAP\s$/s;
 
-		_merge_forward($offsets,$i) if $unsplit;
+		_merge_forward($new_offsets,$i) if $unsplit;
 	}
-	for(my $i=0; $i<$size; $i++){ splice @$offsets, $i,1 unless defined($offsets->[$i]); }
+	$new_offsets = [ grep { defined } @$new_offsets ];
+	return $new_offsets;
+
+	#for(my $i=$size-1; $i>=0; $i--){ splice @$offsets, $i,1 unless defined($offsets->[$i]); }
 }
 
 sub _merge_forward {
@@ -141,54 +149,69 @@ sub _merge_forward {
 sub split_unsplit_stuff {
 	my ($text,$offsets) = @_;
 	my $size = @$offsets;
-	for(my $i=0; $i<$size-1; $i++){
+	for(my $i=0; $i<$size; $i++){
 		my $start  = $offsets->[$i][0];
-		my $end    = $offsets->[$i][1];
-		my $length = $end-$start;
+		my $length = $offsets->[$i][1]-$start;
 		my $s = substr($text,$start,$length);
 
 		my $split_points = [];
-		while($s =~ /(\D\d+$P)(\s+)/g){
-			$end   = $+[1];
-			$start = $-[2];
-			push @$split_points,[$end,$start];
+		while($s =~ /((?:\D|^)\d+$P)(\s+)/g){
+			my $end   = $+[1];
+			my $begin = $-[2];
+			push @$split_points,[$start+$end,$start+$begin];
 		}
 		while($s =~ /($PAP\s)(\s*\()/g){
-			$end   = $+[1];
-			$start = $-[2];
-			push @$split_points,[$end,$start];
+			my $end   = $+[1];
+			my $begin = $-[2];
+			push @$split_points,[$start+$end,$start+$begin];
 		}
 		while($s =~ /('\w$P)(\s)/g){
-			$end   = $+[1];
-			$start = $-[2];
-			push @$split_points,[$end,$start];
+			my $end   = $+[1];
+			my $begin = $-[2];
+			push @$split_points,[$start+$end,$start+$begin];
 		}
 		while($s =~ /(\sno\.)(\s+)(?!\d)/g){
-			$end   = $+[1];
-			$start = $-[2];
-			push @$split_points,[$end,$start];
+			my $end   = $+[1];
+			my $begin = $-[2];
+			push @$split_points,[$start+$end,$start+$begin];
+		}
+		while($s =~ /([ap]\.m\.\s+)([[:upper:]])/g){
+			my $end   = $+[1];
+			my $begin = $-[2];
+			push @$split_points,[$start+$end,$start+$begin];
 		}
 
-		foreach( sort { $a->[0] <=> $b->[0] } @$split_points){
-			_split_sentence($offsets,$i,$_->[0],$_->[1]);
-		}
+		_split_sentence($offsets,$i, [ sort { $a->[0] <=> $b->[0] } @$split_points ]) if @$split_points;
 	}
+	return $offsets;
 }
 
 
 
+#sub _split_sentence {
+#	my ($offsets,$i,$end1,$start2) = @_;
+#	my $end2 = $offsets->[$i][1];
+#	$offsets->[$i][1] = $end1;
+#	$start2 //= $end1;
+#	push $offsets, [$start2, $end2];
+#}
+
+
 sub _split_sentence {
-	my ($offsets,$i,$end1,$start2) = @_;
-	my $end2 = $offsets->[$i][1];
-	$offsets->[$i][1] = $end1;
-	$start2 //= $end1;
-	push $offsets, [$start2, $end2];
+	my ($offsets,$i,$split_points) = @_;
+	my ($end,$start) = @{shift @$split_points};
+	my $last = $offsets->[$i][1];
+	$offsets->[$i][1] = $end;
+	while(my $p = shift @$split_points){
+		push @$offsets, [$start,$p->[0]];
+		$start = $p->[1];
+	}
+	push @$offsets, [$start, $last];
 }
 
 
 sub adjust_offsets {
 	my ($text,$offsets) = @_;
-	my $new_offsets = [];
 	my $size = @$offsets;
 	for(my $i=0; $i<$size; $i++){
 		my $start  = $offsets->[$i][0];
@@ -199,47 +222,51 @@ sub adjust_offsets {
 			delete $offsets->[$i];
 			next;
 		}
-		$s =~ /^(\s*).*?(\s*)$/;
+		$s =~ /^(\s*).*?(\s*)$/s;
 		if(defined($1)){ $start += length($1); }
 		if(defined($2)){ $end   -= length($2); }
 		$offsets->[$i] = [$start, $end];
 	}
-	for(my $i=0; $i<$size; $i++){ splice @$offsets, $i,1 unless defined($offsets->[$i]); }
+	my $new_offsets = [ grep { defined } @$offsets ];
+	return $new_offsets;
+	#for(my $i=$size-1; $i>=0; $i--){ splice @$offsets, $i,1 unless defined($offsets->[$i]); }
 }
 
 
 sub initial_offsets {
 	my ($text) = @_;
-	my $offsets = [];
 	my $end;
 	my $text_end = length($text);
+	my $offsets = [[0,$text_end]];
 
-	my $start = 0;
-	#while($text =~ /(\n\s*\n)|$PAP\s()|\s\w$P()/gs){
-	while($text =~ /(\n\s*\n)|$PAP(\s)|\s\w$P()/gs){
+	my @patterns = (
+		qr{(\n\s*\n)},
+		qr{$PAP\s()},
+		qr{\s\w$P()}
+	);
 
-		## double new-line means a different sentence
-		if(defined($1)){
-			push @$offsets, [$start, $-[1]];
-			$start = $+[1];
-		}
+	my $split = 1;
+	while($split){
+		$split = 0;
+		foreach my $pat (@patterns){
+			my $size = @$offsets;
+			for(my $i=0; $i<$size; $i++){
+				my $start  = $offsets->[$i][0];
+				my $length = $offsets->[$i][1]-$start;
+				my $s = substr($text,$start,$length);
 
-		## punctuation+after_punct followed by space
-		elsif(defined($2)){
-			push @$offsets, [$start, $+[2]];
-			$start = $+[2];
-		}
+				my $split_points = [];
+				while($s =~ /(?<!^)$pat(?!$)/g){
+					my $end   = $-[1];
+					my $begin = $+[1];
+					push @$split_points,[$start+$end,$start+$begin];
+				$split = 1;
+				}
 
-		## break also when single letter comes before punc.
-		elsif(defined($3)){
-			push @$offsets, [$start, $-[3]];
-			$start = $+[3];
+				_split_sentence($offsets,$i,[ sort { $a->[0] <=> $b->[0] } @$split_points ]) if @$split_points;
+			}
 		}
 	}
-
-	push @$offsets, [ $start, $text_end ]
-		unless substr($text,$start,$text_end-$start) =~ /^\s*$/;
-
 	return $offsets;
 }
 
@@ -263,15 +290,15 @@ sub offsets2sentences {
 
 =head1 NAME
 
-Lingua::EN::Sentence::Offsets - Finds sentence boundaris, and returns their offsets.
+Lingua::EN::Sentence::Offsets - Finds sentence boundaries, and returns their offsets.
 
 =head1 VERSION
 
-version 0.01_03
+version 0.01_05
 
 =head1 SYNOPSIS
 
-	use Lingua::EN::Sentence::Offsets qw(get_offsets get_sentences);
+	use Lingua::EN::Sentence::Offsets qw/get_offsets get_sentences/;
 	 
 	my $offsets = get_offsets($text);     ## Get the offsets.
 	foreach my $o (@$offsets) {

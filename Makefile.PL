@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Finds sentence boundaris, and returns their offsets.",
+  "ABSTRACT" => "Finds sentence boundaries, and returns their offsets.",
   "AUTHOR" => "Andre Santos <andrefs\@cpan.org>",
   "BUILD_REQUIRES" => {
     "English" => 0,
@@ -20,11 +20,14 @@ my %WriteMakefileArgs = (
     "ExtUtils::MakeMaker" => "6.30"
   },
   "DISTNAME" => "Lingua-EN-Sentences-Offsets",
-  "EXE_FILES" => [],
+  "EXE_FILES" => [
+    "bin/split_sentences"
+  ],
   "LICENSE" => "perl",
   "NAME" => "Lingua::EN::Sentences::Offsets",
   "PREREQ_PM" => {
     "Carp" => 0,
+    "Data::Dump" => 0,
     "Exporter" => 0,
     "base" => 0,
     "feature" => 0,
@@ -32,7 +35,7 @@ my %WriteMakefileArgs = (
     "utf8::all" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.01_03",
+  "VERSION" => "0.01_05",
   "test" => {
     "TESTS" => "t/*.t"
   }
